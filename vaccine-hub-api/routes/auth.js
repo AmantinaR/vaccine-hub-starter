@@ -2,7 +2,7 @@ const express = require('express');
 const User = require('../models/user');
 const router = express.Router();
 
-router.post('login', async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
     try{
         //take users email and password and attempt to authenticate them
         const user = await User.login(req.body);

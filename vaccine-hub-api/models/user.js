@@ -4,13 +4,40 @@ const {BCRYPT_WORK_FACTOR} = require('../config');
 const { UnauthorizedError, BadRequestError } = require('../utils/errors');
 
 class User {
+    static async makePublicUser(user) {
+        return{
+            id: user.id,
+            email: user.email,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            location: user.location,
+            date: user.date
+        }
+    }
+
     static async login(credentials) {
         //user should submit email and password
         //if any fields missing, throw an error
         //
+        const requiredFields = ['email', 'password'];
+        requiredFields.forEach(field => {
+            if (!credentials.hasOwnProperty(field)) {
+                throw new BadRequestError(`Missing ${field} in request body.`)
+            }
+        })
+        
         //lookup user in db by email
+        const user = await User.fetchUserByEmail(credentials.email);
+        
         //if found, compare submitted password with password in db
         //if there is a match, return user
+        if (user) {
+            const isValid = await bcrypt.compare(credentials.password, user.password);
+            if (isValid) {
+                return User.makePublicUser(user);
+            }
+
+        }
         //
         //if any of this goes wrong, throw an error
         throw new UnauthorizedError("Invalud email/password combo")
@@ -58,7 +85,7 @@ class User {
         //return user
         const user = result.rows[0];
 
-        return user;
+        return User.makePublicUser(user);
     }
 
     static async fetchUserByEmail(email) {
