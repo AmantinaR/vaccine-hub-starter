@@ -25,7 +25,7 @@ app.use((error, req, res, next) => {
     const status = error.status || 500
     const message = error.message
 
-    return res.status(status.json({error: {message, status}}))
+    return res.status(status).json({error: {message, status}});
 })
 
 app.listen(PORT, () => {
