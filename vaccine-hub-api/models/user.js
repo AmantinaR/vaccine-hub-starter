@@ -40,7 +40,7 @@ class User {
         }
         //
         //if any of this goes wrong, throw an error
-        throw new UnauthorizedError("Invalud email/password combo")
+        throw new UnauthorizedError("Invalid email/password combo")
     }
 
     static async register(credentials) {
@@ -103,4 +103,4 @@ class User {
     }
 }
 
-module.exports = User
+module.exports = User;

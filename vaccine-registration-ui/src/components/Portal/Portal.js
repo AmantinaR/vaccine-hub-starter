@@ -17,7 +17,7 @@ export default function Portal({ user, setAppState }) {
 
   const content = isAuthenticated ? (
     <>
-      <p className="appt">Your appointment is on {moment().calendar(new Date(user.date))}</p>
+      <p className="appt">Your appointment is on {moment(new Date(user.date)).calendar()}</p>
       <p className="location">
         Please head to <strong>{user.location}</strong> on that day.
       </p>
